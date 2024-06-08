@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pong WS Lobby</title>
+        <style>
+            .divider-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .divider-container hr {
+                flex: 1;
+                border: none;
+                border-top: 1px dashed #000;
+                margin: 0 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="hello">Game Lobby!</h1>
+        <div
+            style="
+                display: flex;
+                margin: auto;
+                min-width: fit-content;
+                max-width: 45rem;
+                height: max-content;
+                flex-direction: column;
+                align-items: center;
+            "
+        >
+            <h2 id="hello">Choose an option</h2>
+            <button style="width: fit-content">Create Room</button>
+            <div class="divider-container">
+                <hr />
+                or
+                <hr />
+            </div>
+            <form>
+                <input type="text" required placeholder="Enter Room Code" />
+                <button style="width: fit-content">Join Room</button>
+            </form>
+        </div>
+    </body>
+</html>
