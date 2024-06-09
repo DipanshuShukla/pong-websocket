@@ -8,8 +8,11 @@ app.use(express.static("game"));
 
 const PORT = process.env.PORT || 8080;
 
-app.get("/", (req, res) => {
+app.get("/game", (req, res) => {
     res.sendFile("views/templates/index.html", { root: __dirname });
+});
+app.get("/", (req, res) => {
+    res.sendFile("views/templates/lobby/index.html", { root: __dirname });
 });
 
 const server = app.listen(PORT, () => {
