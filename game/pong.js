@@ -5,11 +5,18 @@ class Pong {
         this.width = 100;
         this.height = this.width;
 
-        this.paddleSpeed = 1;
+        this.paddleSpeed = 0.5;
         this.paddleLength = 15;
         this.paddleGap = 2;
 
+        this.paddle1Y = this.height / 2;
+        this.paddle2Y = this.height / 2;
+        this.paddle1VelY = 0;
+        this.paddle2VelY = 0;
+
+        this.ballStartVel = 0.4;
         this.ballMaxVel = 1;
+        this.ballVelIncreaseFactor = 1000;
         this.ballRadius = 1.4;
 
         this.score = [0, 0];
@@ -22,15 +29,9 @@ class Pong {
 
         this.ballPosX = this.width / 2;
         this.ballPosY = this.height / 2;
-        while (!this.ballVelX)
-            this.ballVelX =
-                Math.random() * this.ballMaxVel * 2 - this.ballMaxVel;
-        this.ballVelY = Math.random() * this.ballMaxVel * 2 - this.ballMaxVel;
 
-        this.paddle1Y = this.height / 2;
-        this.paddle2Y = this.height / 2;
-        this.paddle1VelY = 0;
-        this.paddle2VelY = 0;
+        this.ballVelX = this.ballStartVel * (Math.random() <= 0.5 ? -1 : 1);
+        this.ballVelY = Math.random() * this.ballMaxVel * 2 - this.ballMaxVel;
     }
 
     newGame() {
@@ -40,8 +41,19 @@ class Pong {
     calculateNextState() {
         if (Date.now() - this.lastGameTime >= 1000 / this.gameRate) {
             this.moveBall();
+            this.increaseBallVelX();
             this.movePaddle();
             this.lastGameTime = Date.now();
+        }
+    }
+
+    increaseBallVelX() {
+        // this.ballVelX < this.ballMaxVel &&
+        //     (this.ballVelX += this.ballMaxVel / this.ballVelIncreaseFactor);
+        if (Math.abs(this.ballVelX) < this.ballMaxVel) {
+            this.ballVelX +=
+                ((this.ballVelX < 0 ? -1 : 1) * this.ballMaxVel) /
+                this.ballVelIncreaseFactor;
         }
     }
 
@@ -59,28 +71,42 @@ class Pong {
 
     moveBall() {
         // Game over
-        if (this.ballPosX < 0) {
-            this.score[1] += 1;
-            this.newGame();
-            console.log(this.score);
+        if (this.ballPosX < this.paddleGap + this.ballRadius * 2) {
+            if (
+                this.ballPosY + this.ballRadius >=
+                    this.paddle1Y - this.paddleLength / 2 &&
+                this.ballPosY - this.ballRadius <=
+                    this.paddle1Y + this.paddleLength / 2
+            ) {
+                this.ballVelX *= -1;
+                this.ballVelY =
+                    (this.ballPosY - (this.paddle1Y - this.paddleLength / 2)) /
+                    this.paddleLength;
+                this.ballVelY = (this.ballVelY * 2 - 1) * this.ballMaxVel;
+            } else {
+                this.score[1] += 1;
+                this.newGame();
+                console.log(this.score);
+            }
         }
-        if (this.ballPosX > this.width) {
-            this.score[0] += 1;
-            this.newGame();
-            console.log(this.score);
+        if (this.ballPosX > this.width - this.paddleGap - this.ballRadius * 2) {
+            if (
+                this.ballPosY + this.ballRadius >=
+                    this.paddle2Y - this.paddleLength / 2 &&
+                this.ballPosY - this.ballRadius <=
+                    this.paddle2Y + this.paddleLength / 2
+            ) {
+                this.ballVelX *= -1;
+                this.ballVelY =
+                    (this.ballPosY - (this.paddle2Y - this.paddleLength / 2)) /
+                    this.paddleLength;
+                this.ballVelY = (this.ballVelY * 2 - 1) * this.ballMaxVel;
+            } else {
+                this.score[0] += 1;
+                this.newGame();
+                console.log(this.score);
+            }
         }
-
-        // paddle bounce
-        if (
-            (this.ballPosX < this.paddleGap + this.ballRadius * 2 &&
-                this.ballPosY > this.paddle1Y - this.paddleLength / 2 &&
-                this.ballPosY < this.paddle1Y + this.paddleLength / 2) ||
-            (this.ballPosX >
-                this.width - this.paddleGap - this.ballRadius * 2 &&
-                this.ballPosY > this.paddle2Y - this.paddleLength / 2 &&
-                this.ballPosY < this.paddle2Y + this.paddleLength / 2)
-        )
-            this.ballVelX *= -1;
 
         // wall bounce
         if (

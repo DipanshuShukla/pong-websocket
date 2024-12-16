@@ -13,6 +13,5 @@ app.get("/", (req, res) => {
 });
 
 const server = app.listen(PORT, () => {
-    console.log(`Pong websocket running on http://localhost:${PORT}`);
-    console.log(Pong);
+    console.log(`\nPong websocket running on http://localhost:${PORT}\n`);
 });

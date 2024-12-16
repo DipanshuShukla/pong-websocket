@@ -83,7 +83,7 @@ class Renderer {
         this.ctx.font = "72px serif";
         this.ctx.fillText(
             (this.game.score[0] < 10 ? "0" : "") + this.game.score[0],
-            (this.game.width / 2 - 12) * this.posScalerX,
+            (this.game.width / 2 - 13) * this.posScalerX,
             this.scorePosY * this.posScalerY
         );
         this.ctx.fillText(
@@ -94,7 +94,7 @@ class Renderer {
     }
 
     drawCenterPartition() {
-        this.ctx.strokeStyle = "white";
+        this.ctx.strokeStyle = "rgb( 244,172,70 )";
         this.ctx.setLineDash([4 * this.posScalerY, 2 * this.posScalerY]);
         // Start a new Path
         this.ctx.beginPath();
@@ -120,12 +120,12 @@ class Renderer {
             2 * Math.PI,
             false
         );
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = "rgb( 244,172,70 )";
         this.ctx.fill();
     }
 
     drawPaddles() {
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = "rgb( 244,172,70 )";
         this.ctx.fillRect(
             this.game.paddleGap * this.posScalerX,
             (this.game.paddle1Y - this.game.paddleLength / 2) * this.posScalerY,
