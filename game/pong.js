@@ -38,6 +38,44 @@ class Pong {
         this.gameInit();
     }
 
+    getGameState() {
+        return {
+            height: this.height,
+            width: this.width,
+
+            ballPosX: this.ballPosX,
+            ballPosY: this.ballPosY,
+            ballVelX: this.ballVelX,
+            ballVelY: this.ballVelY,
+
+            paddle1Y: this.paddle1Y,
+            paddle2Y: this.paddle2Y,
+
+            paddleSpeed: this.paddleSpeed,
+            paddleLength: this.paddleLength,
+            paddleGap: this.paddleGap,
+
+            ballRadius: this.ballRadius,
+        };
+    }
+
+    setGameState({
+        ballPosX,
+        ballPosY,
+        ballVelX,
+        ballVelY,
+
+        paddle1Y,
+        paddle2Y,
+    }) {
+        ballPosX && (this.ballPosX = ballPosX),
+            ballPosY && (this.ballPosY = ballPosY),
+            ballVelX && (this.ballVelX = ballVelX),
+            ballVelY && (this.ballVelY = ballVelY),
+            paddle1Y && (this.paddle1Y = paddle1Y),
+            paddle2Y && (this.paddle2Y = paddle2Y);
+    }
+
     calculateNextState() {
         if (Date.now() - this.lastGameTime >= 1000 / this.gameRate) {
             this.moveBall();
@@ -86,7 +124,6 @@ class Pong {
             } else {
                 this.score[1] += 1;
                 this.newGame();
-                console.log(this.score);
             }
         }
         if (this.ballPosX > this.width - this.paddleGap - this.ballRadius * 2) {
